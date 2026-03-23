@@ -42,18 +42,12 @@ body::before {
 }
 .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
 
-/* HEADER */
-header {
-display: flex; justify-content: space-between; align-items: flex-end;
-margin-bottom: 2.5rem; padding-bottom: 1.5rem;
-border-bottom: 2px solid var(–border2); flex-wrap: wrap; gap: 1rem;
-}
 .h-title {
-font-family: var(–display); font-size: clamp(2rem, 6vw, 3rem);
+font-family: var(–display); font-size: clamp(2.2rem, 7vw, 3.4rem);
 font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; color: var(–ink);
 }
 .h-title em { color: var(–accent); font-style: normal; }
-.h-sub { font-family: var(–mono); font-size: 0.8rem; color: var(–ink3); letter-spacing: 0.08em; margin-top: 0.6rem; }
+.h-sub { font-family: var(–mono); font-size: 0.95rem; color: var(–ink3); letter-spacing: 0.08em; margin-top: 0.6rem; }
 
 /* DIAGRAM */
 .diagram-box {
@@ -62,17 +56,17 @@ padding: 1.4rem 1.6rem; margin-bottom: 1.5rem;
 display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center;
 }
 .diagram-box h3 {
-font-family: var(–display); font-size: 0.8rem; letter-spacing: 0.15em;
+font-family: var(–display); font-size: 0.9rem; letter-spacing: 0.15em;
 text-transform: uppercase; color: #555; margin-bottom: 0.8rem;
 }
 .d-steps { display: flex; flex-direction: column; gap: 0.6rem; }
 .d-step {
 display: flex; align-items: flex-start; gap: 0.8rem;
-font-size: 0.92rem; font-family: var(–body); color: #bbb; line-height: 1.5;
+font-size: 1.05rem; font-family: var(–body); color: #bbb; line-height: 1.5;
 }
 .sn {
-width: 24px; height: 24px; border-radius: 50%;
-font-size: 0.7rem; font-weight: 700;
+width: 28px; height: 28px; border-radius: 50%;
+font-size: 0.8rem; font-weight: 700;
 display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
 }
 .sn.p1 { background: var(–plane1); color: white; }
@@ -83,62 +77,79 @@ display: flex; align-items: center; justify-content: center; flex-shrink: 0; mar
 /* SECTION */
 .section {
 background: var(–surface); border: 1px solid var(–border);
-padding: 1.5rem 1.5rem; margin-bottom: 1.2rem;
+padding: 1.6rem 1.5rem; margin-bottom: 1.4rem;
 }
 .section.p1-active { border-left: 4px solid var(–plane1); }
 .section.p2-active { border-left: 4px solid var(–plane2); }
-.section-label { font-family: var(–mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–ink3); margin-bottom: 0.3rem; }
-.section-title { font-family: var(–display); font-size: 1.15rem; font-weight: 700; color: var(–ink); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(–border); }
+.section-label { font-family: var(–mono); font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–ink3); margin-bottom: 0.4rem; }
+.section-title { font-family: var(–display); font-size: 1.35rem; font-weight: 700; color: var(–ink); margin-bottom: 1.3rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(–border); }
 
 .plane-badge {
-display: inline-block; font-family: var(–mono); font-size: 0.7rem;
-letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.7rem;
+display: inline-block; font-family: var(–mono); font-size: 0.8rem;
+letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.8rem;
 margin-left: 0.6rem; vertical-align: middle;
 }
 .pb1 { background: rgba(255,85,51,0.15); color: var(–plane1); border: 1px solid var(–plane1); }
 .pb2 { background: rgba(68,136,255,0.15); color: var(–plane2); border: 1px solid var(–plane2); }
 
 /* INPUTS */
-.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1rem; }
-.input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1.2rem; }
+.input-group { display: flex; flex-direction: column; gap: 0.5rem; }
 .input-group label {
-font-family: var(–mono); font-size: 0.75rem; letter-spacing: 0.06em;
+font-family: var(–mono); font-size: 0.88rem; letter-spacing: 0.06em;
 text-transform: uppercase; color: var(–ink2); display: flex; align-items: center; gap: 0.5rem;
 }
-.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 input[type=“text”], input[type=“number”] {
-width: 100%; padding: 1rem 1.1rem;
-background: #0a0a0a !important; border: 1.5px solid #333;
-color: #ffffff !important; font-family: var(–mono); font-size: 1.2rem;
-outline: none; transition: border-color 0.15s;
--webkit-appearance: none; appearance: none;
-border-radius: 2px;
+width: 100%;
+padding: 1.1rem 1.2rem;
+background: #0a0a0a !important;
+background-color: #0a0a0a !important;
+border: 2px solid #444;
+color: #ffffff !important;
+font-family: var(–mono);
+font-size: 1.35rem;
+outline: none;
+transition: border-color 0.15s;
+-webkit-appearance: none !important;
+-moz-appearance: none !important;
+appearance: none !important;
+border-radius: 0 !important;
 -webkit-text-fill-color: #ffffff !important;
 caret-color: #4488ff;
+box-shadow: inset 0 0 0 9999px #0a0a0a !important;
 }
 input[type=“number”] { -moz-appearance: textfield; }
 input[type=“number”]::-webkit-outer-spin-button,
 input[type=“number”]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=“text”]:focus, input[type=“number”]:focus {
-border-color: var(–plane2);
-background: #111 !important;
+border-color: #4488ff;
+box-shadow: inset 0 0 0 9999px #111111 !important;
+background-color: #111111 !important;
 -webkit-text-fill-color: #ffffff !important;
-box-shadow: 0 0 0 3px rgba(68,136,255,0.15);
+outline: none;
 }
-input[type=“text”]::placeholder, input[type=“number”]::placeholder { color: #444; -webkit-text-fill-color: #444; }
+input::placeholder {
+color: #555 !important;
+-webkit-text-fill-color: #555 !important;
+opacity: 1;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
--webkit-box-shadow: 0 0 0px 1000px #0a0a0a inset !important;
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+-webkit-box-shadow: 0 0 0px 9999px #0a0a0a inset !important;
+box-shadow: 0 0 0px 9999px #0a0a0a inset !important;
 -webkit-text-fill-color: #ffffff !important;
 caret-color: #ffffff;
+background-color: #0a0a0a !important;
 }
-.input-unit { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); }
+.input-unit { font-family: var(–mono); font-size: 0.82rem; color: var(–ink3); margin-top: 0.1rem; }
 
 .hint-box {
-font-size: 0.85rem; color: var(–ink2); line-height: 1.6;
-padding: 0.9rem 1rem; background: #1a1500;
-border-left: 3px solid var(–warn); margin-top: 0.8rem;
+font-size: 0.95rem; color: var(–ink2); line-height: 1.6;
+padding: 1rem 1.1rem; background: #1a1500;
+border-left: 3px solid var(–warn); margin-top: 0.9rem;
 }
 .hint-box strong { color: var(–ink); }
 
@@ -155,8 +166,8 @@ content: ‘’; flex: 1; height: 1px; background: var(–border);
 
 /* CALC BTN */
 .calc-btn {
-width: 100%; padding: 1.2rem; background: var(–accent); color: white;
-border: none; font-family: var(–display); font-size: 1.1rem; font-weight: 700;
+width: 100%; padding: 1.3rem; background: var(–accent); color: white;
+border: none; font-family: var(–display); font-size: 1.25rem; font-weight: 700;
 letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
 margin-top: 1.2rem; transition: all 0.15s; border-radius: 2px;
 }
@@ -177,51 +188,51 @@ animation: popIn 0.35s ease forwards; background: var(–surface);
 @keyframes popIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
 .rp-title {
-font-family: var(–display); font-size: 0.85rem; font-weight: 700;
+font-family: var(–display); font-size: 1rem; font-weight: 700;
 letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
 }
 .rp-title.c1 { color: var(–plane1); }
 .rp-title.c2 { color: var(–plane2); }
 
 .rp-main { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1rem; }
-.rp-card { padding: 1rem; text-align: center; border-radius: 2px; }
+.rp-card { padding: 1.1rem; text-align: center; border-radius: 2px; }
 .rp-card.filled1 { background: var(–plane1); }
 .rp-card.filled2 { background: var(–plane2); }
 .rp-card.dark { background: #222; }
-.rp-label { font-family: var(–mono); font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; text-transform: uppercase; }
-.rp-val { font-family: var(–display); font-size: 1.7rem; font-weight: 800; color: white; line-height: 1; }
-.rp-unit { font-family: var(–mono); font-size: 0.65rem; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
+.rp-label { font-family: var(–mono); font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; text-transform: uppercase; }
+.rp-val { font-family: var(–display); font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
+.rp-unit { font-family: var(–mono); font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
 
 .dials-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
 .dial-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-.dial-lbl { font-family: var(–mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.dial-lbl { font-family: var(–mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .dial-lbl.c1 { color: var(–plane1); }
 .dial-lbl.c2 { color: var(–plane2); }
 
-.result-rows { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.result-rows { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
 .result-row {
 display: flex; justify-content: space-between; align-items: center;
-padding: 0.65rem 1rem; background: #1e1e1e; border: 1px solid var(–border);
+padding: 0.9rem 1.1rem; background: #1e1e1e; border: 1px solid var(–border);
 border-radius: 2px;
 }
-.rr-label { color: var(–ink2); font-family: var(–mono); font-size: 0.78rem; }
-.rr-val { font-family: var(–mono); font-size: 0.88rem; font-weight: 500; color: var(–ink); }
+.rr-label { color: var(–ink2); font-family: var(–mono); font-size: 0.9rem; }
+.rr-val { font-family: var(–mono); font-size: 1rem; font-weight: 500; color: var(–ink); }
 
-.placement-guide { background: #111; border: 1px solid var(–border2); padding: 1.3rem 1.4rem; margin-top: 1.2rem; }
-.pg-title { font-family: var(–display); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #444; margin-bottom: 1rem; }
+.placement-guide { background: #111; border: 1px solid var(–border2); padding: 1.4rem 1.5rem; margin-top: 1.2rem; }
+.pg-title { font-family: var(–display); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #444; margin-bottom: 1rem; }
 .pg-section { margin-bottom: 1rem; }
-.pg-section-title { font-family: var(–mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+.pg-section-title { font-family: var(–mono); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
 .pg-section-title.c1 { color: var(–plane1); }
 .pg-section-title.c2 { color: var(–plane2); }
-.pg-steps { display: flex; flex-direction: column; gap: 0.6rem; }
-.pg-step { display: grid; grid-template-columns: 24px 1fr; gap: 0.7rem; align-items: start; font-family: var(–body); font-size: 0.92rem; color: #bbb; line-height: 1.5; word-break: break-word; }
-.pg-n { width: 24px; height: 24px; border-radius: 50%; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.pg-steps { display: flex; flex-direction: column; gap: 0.7rem; }
+.pg-step { display: grid; grid-template-columns: 28px 1fr; gap: 0.8rem; align-items: start; font-family: var(–body); font-size: 1rem; color: #ccc; line-height: 1.5; word-break: break-word; }
+.pg-n { width: 28px; height: 28px; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
 .pg-n.n1 { background: var(–plane1); color: white; }
 .pg-n.n2 { background: var(–plane2); color: white; }
 .pg-n.nok { background: var(–ok); color: white; }
 
 .status-banner {
-padding: 1rem 1.2rem; font-family: var(–body); font-size: 0.9rem;
+padding: 1.1rem 1.3rem; font-family: var(–body); font-size: 1rem;
 letter-spacing: 0.02em; display: flex; align-items: center; gap: 0.8rem; margin-top: 1rem;
 border-radius: 2px;
 }
@@ -344,7 +355,7 @@ footer p { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); le
   </div>
 </div>
 
-<button class="calc-btn" onclick="calculate()">⟶ HESAPLA</button>
+<button class="calc-btn" id="calcBtn">⟶ HESAPLA</button>
 
 <!-- RESULTS -->
 
@@ -492,12 +503,25 @@ return best.l;
 }
 
 function calculate() {
-const ids = [‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’];
-const vals = ids.map(id => parseFloat(document.getElementById(id).value));
-if (vals.some(isNaN) || vals.some(v => v <= 0)) {
-alert(‘Lütfen tüm alanları eksiksiz doldurun.’); return;
+try {
+function parseVal(id) {
+const raw = document.getElementById(id).value.trim().replace(’,’, ‘.’);
+return parseFloat(raw);
 }
+
+```
+const ids = ['p2_v0','p2_vA','p2_vB','p2_vC','p2_wt','p2_r','p2_m','rpm'];
+const vals = ids.map(id => parseVal(id));
+
+// Hangi alan boş/hatalı — kullanıcıya göster
+const labels = ['1. Ölçüm','2. Ölçüm','3. Ölçüm','4. Ölçüm','Deneme Ağırlığı','Fan Yarıçapı','Fan Ağırlığı','RPM'];
+const empty = ids.map((id, i) => isNaN(vals[i]) || vals[i] <= 0 ? labels[i] : null).filter(Boolean);
+if (empty.length > 0) {
+  alert('Eksik veya hatalı alan:\n' + empty.join('\n')); return;
+}
+
 const [p2v0,p2vA,p2vB,p2vC,p2wt,p2r,p2m,rpm] = vals;
+```
 
 const r2 = calcPlane(p2v0,p2vA,p2vB,p2vC,p2wt);
 const U2 = r2.weight * p2r;
@@ -528,6 +552,9 @@ n: histCount,
 p2v0, p2w: r2.weight.toFixed(1), p2a: r2.angle.toFixed(1)
 });
 renderHistory();
+} catch(err) {
+alert(’Hesaplama hatası: ’ + err.message);
+}
 }
 
 function renderHistory() {
@@ -539,6 +566,15 @@ document.getElementById(‘histBody’).innerHTML = historyData.slice().reverse(
 }
 
 function clearHistory() { historyData = []; renderHistory(); }
+
+// Butonları JS ile bağla
+document.addEventListener(‘DOMContentLoaded’, function() {
+document.getElementById(‘calcBtn’).addEventListener(‘click’, calculate);
+});
+// DOMContentLoaded zaten geçmişse direkt bağla
+if (document.readyState !== ‘loading’) {
+document.getElementById(‘calcBtn’).addEventListener(‘click’, calculate);
+}
 
 function resetForm() {
 [‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’].forEach(id => {
