@@ -1,1 +1,532 @@
+<!DOCTYPE html>
 
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fan Balans Hesap Aracı</title>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2eb;
+  --bg2: #edeae0;
+  --surface: #ffffff;
+  --border: #d4cfc2;
+  --border2: #c4bfb0;
+  --ink: #1a1814;
+  --ink2: #5a5650;
+  --ink3: #8a8680;
+  --accent: #c84b2f;
+  --accent2: #2f6bc8;
+  --ok: #1a7a4a;
+  --warn: #b87a10;
+  --plane1: #c84b2f;
+  --plane2: #2f6bc8;
+  --mono: 'DM Mono', monospace;
+  --display: 'Oxanium', sans-serif;
+  --body: 'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='%23000' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
+
+/* HEADER */
+header {
+display: flex; justify-content: space-between; align-items: flex-end;
+margin-bottom: 2.5rem; padding-bottom: 1.5rem;
+border-bottom: 2px solid var(–ink); flex-wrap: wrap; gap: 1rem;
+}
+.h-title {
+font-family: var(–display); font-size: clamp(1.8rem, 5vw, 2.8rem);
+font-weight: 800; letter-spacing: -0.01em; line-height: 1; color: var(–ink);
+}
+.h-title em { color: var(–accent); font-style: normal; }
+.h-sub { font-family: var(–mono); font-size: 0.68rem; color: var(–ink3); letter-spacing: 0.1em; margin-top: 0.5rem; }
+
+/* DIAGRAM */
+.diagram-box {
+background: var(–ink); padding: 1.4rem 1.8rem; margin-bottom: 1.5rem;
+display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center;
+}
+.diagram-box h3 {
+font-family: var(–display); font-size: 0.75rem; letter-spacing: 0.15em;
+text-transform: uppercase; color: #888; margin-bottom: 0.7rem;
+}
+.d-steps { display: flex; flex-direction: column; gap: 0.4rem; }
+.d-step {
+display: flex; align-items: flex-start; gap: 0.7rem;
+font-size: 0.8rem; font-family: var(–mono); color: #ccc; line-height: 1.4;
+}
+.sn {
+width: 20px; height: 20px; border-radius: 50%;
+font-size: 0.6rem; font-weight: 700;
+display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.sn.p1 { background: var(–plane1); color: white; }
+.sn.p2 { background: var(–plane2); color: white; }
+.sn.ok { background: #1a7a4a; color: white; }
+@media (max-width: 520px) { .diagram-box { grid-template-columns: 1fr; } .fan-svg { display: none; } }
+
+/* SECTION */
+.section {
+background: var(–surface); border: 1.5px solid var(–border);
+padding: 1.5rem 1.8rem; margin-bottom: 1.2rem;
+}
+.section.p1-active { border-left: 4px solid var(–plane1); }
+.section.p2-active { border-left: 4px solid var(–plane2); }
+.section-label { font-family: var(–mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(–ink3); margin-bottom: 0.3rem; }
+.section-title { font-family: var(–display); font-size: 1rem; font-weight: 700; color: var(–ink); margin-bottom: 1.1rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(–border); }
+
+.plane-badge {
+display: inline-block; font-family: var(–mono); font-size: 0.65rem;
+letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem;
+margin-left: 0.6rem; vertical-align: middle;
+}
+.pb1 { background: rgba(200,75,47,0.12); color: var(–plane1); border: 1px solid var(–plane1); }
+.pb2 { background: rgba(47,107,200,0.12); color: var(–plane2); border: 1px solid var(–plane2); }
+
+/* INPUTS */
+.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1rem; }
+.input-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.input-group label {
+font-family: var(–mono); font-size: 0.65rem; letter-spacing: 0.08em;
+text-transform: uppercase; color: var(–ink2); display: flex; align-items: center; gap: 0.4rem;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+input[type=“number”] {
+width: 100%; padding: 0.65rem 0.9rem;
+background: var(–bg2); border: 1.5px solid var(–border);
+color: var(–ink); font-family: var(–mono); font-size: 1rem;
+outline: none; transition: border-color 0.15s; -moz-appearance: textfield;
+}
+input[type=“number”]::-webkit-outer-spin-button,
+input[type=“number”]::-webkit-inner-spin-button { -webkit-appearance: none; }
+input[type=“number”]:focus { border-color: var(–accent); background: #fff; }
+.input-unit { font-family: var(–mono); font-size: 0.62rem; color: var(–ink3); }
+
+.hint-box {
+font-size: 0.78rem; color: var(–ink2); line-height: 1.6;
+padding: 0.8rem 1rem; background: var(–bg2);
+border-left: 3px solid var(–warn); margin-top: 0.8rem;
+}
+.hint-box strong { color: var(–ink); }
+
+.plane-divider {
+display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0;
+}
+.plane-divider span {
+font-family: var(–mono); font-size: 0.65rem; letter-spacing: 0.12em;
+text-transform: uppercase; color: var(–ink3); white-space: nowrap;
+}
+.plane-divider::before, .plane-divider::after {
+content: ‘’; flex: 1; height: 1px; background: var(–border);
+}
+
+/* CALC BTN */
+.calc-btn {
+width: 100%; padding: 1.1rem; background: var(–accent); color: white;
+border: none; font-family: var(–display); font-size: 1rem; font-weight: 700;
+letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+margin-top: 1.2rem; transition: all 0.15s;
+}
+.calc-btn:hover { background: #a83d24; }
+
+/* RESULTS */
+#resultSection { display: none; }
+.result-planes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+@media (max-width: 540px) { .result-planes { grid-template-columns: 1fr; } }
+
+.result-plane {
+border: 2px solid var(–border); padding: 1.4rem;
+animation: popIn 0.35s ease forwards;
+}
+.result-plane.rp1 { border-top: 4px solid var(–plane1); }
+.result-plane.rp2 { border-top: 4px solid var(–plane2); }
+
+@keyframes popIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+.rp-title {
+font-family: var(–display); font-size: 0.75rem; font-weight: 700;
+letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.rp-title.c1 { color: var(–plane1); }
+.rp-title.c2 { color: var(–plane2); }
+
+.rp-main { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1rem; }
+.rp-card { padding: 0.9rem; text-align: center; }
+.rp-card.filled1 { background: var(–plane1); }
+.rp-card.filled2 { background: var(–plane2); }
+.rp-card.dark { background: var(–ink); }
+.rp-label { font-family: var(–mono); font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: 0.3rem; text-transform: uppercase; }
+.rp-val { font-family: var(–display); font-size: 1.5rem; font-weight: 800; color: white; line-height: 1; }
+.rp-unit { font-family: var(–mono); font-size: 0.6rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem; }
+
+.dials-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+.dial-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+.dial-lbl { font-family: var(–mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.dial-lbl.c1 { color: var(–plane1); }
+.dial-lbl.c2 { color: var(–plane2); }
+
+.result-rows { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.result-row {
+display: flex; justify-content: space-between; align-items: center;
+padding: 0.55rem 0.9rem; background: var(–bg2); border: 1px solid var(–border);
+}
+.rr-label { color: var(–ink2); font-family: var(–mono); font-size: 0.72rem; }
+.rr-val { font-family: var(–mono); font-size: 0.82rem; font-weight: 500; color: var(–ink); }
+
+.placement-guide { background: var(–ink); padding: 1.2rem 1.3rem; margin-top: 1.2rem; }
+.pg-title { font-family: var(–display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #777; margin-bottom: 1rem; }
+.pg-section { margin-bottom: 1rem; }
+.pg-section-title { font-family: var(–mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.pg-section-title.c1 { color: var(–plane1); }
+.pg-section-title.c2 { color: var(–plane2); }
+.pg-steps { display: flex; flex-direction: column; gap: 0.5rem; }
+.pg-step { display: grid; grid-template-columns: 20px 1fr; gap: 0.6rem; align-items: start; font-family: var(–mono); font-size: 0.78rem; color: #ccc; line-height: 1.45; word-break: break-word; }
+.pg-n { width: 20px; height: 20px; border-radius: 50%; font-size: 0.6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.pg-n.n1 { background: var(–plane1); color: white; }
+.pg-n.n2 { background: var(–plane2); color: white; }
+.pg-n.nok { background: #1a7a4a; color: white; }
+
+.status-banner {
+padding: 0.85rem 1.1rem; font-family: var(–mono); font-size: 0.76rem;
+letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.7rem; margin-top: 1rem;
+}
+.status-banner.ok { background: rgba(26,122,74,0.1); border: 1.5px solid var(–ok); color: var(–ok); }
+.status-banner.warn { background: rgba(184,122,16,0.1); border: 1.5px solid var(–warn); color: var(–warn); }
+
+.history-section { margin-top: 2rem; padding: 1.2rem 1.5rem; background: var(–surface); border: 1.5px solid var(–border); }
+.hist-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.hist-title { font-family: var(–mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–ink3); }
+.hist-clear { font-family: var(–mono); font-size: 0.62rem; color: var(–accent); cursor: pointer; background: none; border: none; }
+.hist-table { width: 100%; border-collapse: collapse; font-family: var(–mono); font-size: 0.72rem; }
+.hist-table th { text-align: left; padding: 0.35rem 0.5rem; color: var(–ink3); border-bottom: 1px solid var(–border); font-weight: 400; }
+.hist-table td { padding: 0.35rem 0.5rem; border-bottom: 1px solid var(–bg2); color: var(–ink2); }
+
+.reset-btn {
+width: 100%; padding: 0.8rem; background: transparent; color: var(–ink2);
+border: 1.5px solid var(–border2); font-family: var(–mono); font-size: 0.72rem;
+letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 1rem; transition: all 0.15s;
+}
+.reset-btn:hover { border-color: var(–ink); color: var(–ink); }
+
+footer { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(–border); }
+footer p { font-family: var(–mono); font-size: 0.62rem; color: var(–ink3); letter-spacing: 0.05em; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <div class="h-title">Tek Düzlem<br><em>Fan Balans</em> Hesabı</div>
+    <div class="h-sub">// Fan Tarafı (F2) — 3 Nokta Yöntemi</div>
+  </div>
+</header>
+
+<div class="diagram-box">
+  <div>
+    <h3>// Uygulama Sırası</h3>
+    <div class="d-steps">
+      <div class="d-step"><span class="sn p2">1</span>Fan tarafı (F2): Ağırlıksız 1. ölçümü al</div>
+      <div class="d-step"><span class="sn p2">2</span>0° → 120° → 240° konumlarında deneme ağırlığıyla 3 tur ölçüm al</div>
+      <div class="d-step"><span class="sn ok">✓</span>Değerleri gir → hesapla → düzeltme ağırlığını tak</div>
+    </div>
+  </div>
+  <svg class="fan-svg" width="170" height="100" viewBox="0 0 170 100">
+    <line x1="10" y1="50" x2="160" y2="50" stroke="#444" stroke-width="3"/>
+    <rect x="16" y="38" width="18" height="24" rx="2" fill="#c84b2f" opacity="0.9"/>
+    <text x="25" y="78" text-anchor="middle" fill="#c84b2f" font-size="8" font-family="monospace">Motor</text>
+    <rect x="136" y="38" width="18" height="24" rx="2" fill="#2f6bc8" opacity="0.9"/>
+    <text x="145" y="78" text-anchor="middle" fill="#2f6bc8" font-size="8" font-family="monospace">Fan</text>
+    <ellipse cx="142" cy="50" rx="4" ry="24" fill="none" stroke="#2f6bc8" stroke-width="1.5" opacity="0.6"/>
+    <ellipse cx="142" cy="50" rx="24" ry="4" fill="none" stroke="#2f6bc8" stroke-width="1.5" opacity="0.6"/>
+    <rect x="34" y="34" width="42" height="32" rx="3" fill="#333"/>
+    <text x="25" y="18" text-anchor="middle" fill="#555" font-size="9" font-family="monospace">Motor</text>
+    <text x="145" y="18" text-anchor="middle" fill="#2f6bc8" font-size="9" font-family="monospace">F2</text>
+    <line x1="25" y1="20" x2="25" y2="38" stroke="#555" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="145" y1="20" x2="145" y2="38" stroke="#2f6bc8" stroke-width="1" stroke-dasharray="2,2"/>
+  </svg>
+</div>
+
+<!-- F2 MEASUREMENTS -->
+
+<div class="section p2-active">
+  <div class="section-label">Fan Tarafı Ölçümleri</div>
+  <div class="section-title">4 Tur Titreşim Ölçümü <span class="plane-badge pb2">F2</span></div>
+  <div class="input-grid">
+    <div class="input-group">
+      <label><span class="dot" style="background:#555"></span>1. Ölçüm — Ağırlıksız</label>
+      <input type="number" id="p2_v0" placeholder="örn: 6.40" step="0.01" min="0">
+      <div class="input-unit">mm/s — 0 to peak — 1X bileşeni</div>
+    </div>
+    <div class="input-group">
+      <label><span class="dot" style="background:#c84b2f"></span>2. Ölçüm — Deneme ağırlığı 0°</label>
+      <input type="number" id="p2_vA" placeholder="örn: 8.10" step="0.01" min="0">
+      <div class="input-unit">mm/s — 0 to peak</div>
+    </div>
+    <div class="input-group">
+      <label><span class="dot" style="background:#e8a020"></span>3. Ölçüm — Deneme ağırlığı 120°</label>
+      <input type="number" id="p2_vB" placeholder="örn: 5.20" step="0.01" min="0">
+      <div class="input-unit">mm/s — 0 to peak</div>
+    </div>
+    <div class="input-group">
+      <label><span class="dot" style="background:#2f6bc8"></span>4. Ölçüm — Deneme ağırlığı 240°</label>
+      <input type="number" id="p2_vC" placeholder="örn: 7.30" step="0.01" min="0">
+      <div class="input-unit">mm/s — 0 to peak</div>
+    </div>
+  </div>
+  <div class="hint-box">
+    <strong>Ölçüm noktası:</strong> Fan yatak gövdesinden radyal yönde. Her turda deneme ağırlığını tamamen söküp sonraki konuma takın.
+  </div>
+</div>
+
+<!-- F2 TRIAL WEIGHT -->
+
+<div class="section p2-active">
+  <div class="section-label">Deneme Ağırlığı & Ekipman Bilgisi</div>
+  <div class="section-title">Fan Tarafı Deneme Ağırlığı <span class="plane-badge pb2">F2</span></div>
+  <div class="input-grid">
+    <div class="input-group">
+      <label>Deneme Ağırlığı (W_t)</label>
+      <input type="number" id="p2_wt" placeholder="örn: 60" step="0.1" min="0.1">
+      <div class="input-unit">gram</div>
+    </div>
+    <div class="input-group">
+      <label>Fan Ağırlığı</label>
+      <input type="number" id="p2_m" placeholder="örn: 12" step="0.1" min="0.1">
+      <div class="input-unit">kg</div>
+    </div>
+    <div class="input-group">
+      <label>Fan Yarıçapı</label>
+      <input type="number" id="p2_r" placeholder="örn: 200" step="1" min="1">
+      <div class="input-unit">mm</div>
+    </div>
+    <div class="input-group">
+      <label>Devir (RPM)</label>
+      <input type="number" id="rpm" placeholder="örn: 1480" step="1" min="100">
+      <div class="input-unit">rpm</div>
+    </div>
+  </div>
+</div>
+
+<button class="calc-btn" onclick="calculate()">⟶ HESAPLA</button>
+
+<!-- RESULTS -->
+
+<div id="resultSection">
+  <div class="section" style="margin-top:1.5rem">
+    <div class="section-label">Sonuçlar</div>
+    <div class="section-title">Düzeltme Ağırlıkları & Konumlar</div>
+
+```
+<div class="result-planes" style="grid-template-columns:1fr">
+  <div class="result-plane rp2">
+    <div class="rp-title c2">Fan Tarafı — F2</div>
+    <div class="rp-main">
+      <div class="rp-card filled2">
+        <div class="rp-label">Düzeltme Ağırlığı</div>
+        <div class="rp-val" id="p2_resW">—</div>
+        <div class="rp-unit">gram</div>
+      </div>
+      <div class="rp-card dark">
+        <div class="rp-label">Konum</div>
+        <div class="rp-val" id="p2_resA">—</div>
+        <div class="rp-unit">derece (0°'den)</div>
+      </div>
+    </div>
+    <div class="result-rows">
+      <div class="result-row"><span class="rr-label">Dengesizlik (U)</span><span class="rr-val" id="p2_U">—</span></div>
+      <div class="result-row"><span class="rr-label">Özgül dengesizlik (e)</span><span class="rr-val" id="p2_e">—</span></div>
+      <div class="result-row"><span class="rr-label">Hedef titreşim</span><span class="rr-val" id="p2_target">—</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="dials-row" style="grid-template-columns:1fr;max-width:220px;margin:1rem auto">
+  <div class="dial-wrap">
+    <svg width="180" height="180" viewBox="0 0 180 180">
+      <circle cx="90" cy="90" r="82" fill="#1a1814" stroke="#333" stroke-width="1.5"/>
+      <g id="ticks2"></g>
+      <circle cx="90" cy="90" r="64" fill="none" stroke="#222" stroke-width="1"/>
+      <circle cx="90" cy="90" r="40" fill="none" stroke="#222" stroke-width="1"/>
+      <circle cx="170" cy="90" r="4" fill="#2f6bc8"/>
+      <text x="156" y="80" fill="#666" font-size="8" font-family="monospace">0°</text>
+      <circle cx="90" cy="90" r="7" fill="#333"/>
+      <line id="arrow2" x1="90" y1="90" x2="170" y2="90" stroke="#2f6bc8" stroke-width="3" stroke-linecap="round" style="display:none; transform-origin:90px 90px"/>
+      <circle id="dot2" cx="170" cy="90" r="6" fill="#2f6bc8" style="display:none; transform-origin:90px 90px"/>
+      <text id="lbl2" x="90" y="130" text-anchor="middle" fill="#2f6bc8" font-family="monospace" font-size="12" font-weight="bold" style="display:none"></text>
+    </svg>
+    <div class="dial-lbl c2">Fan Tarafı — F2</div>
+  </div>
+</div>
+
+<div id="statusBanner" class="status-banner ok">
+  <span id="statusText">—</span>
+</div>
+
+<div class="placement-guide">
+  <div class="pg-title">// Yerleştirme Talimatı</div>
+  <div id="pgContent"></div>
+</div>
+
+<button class="reset-btn" onclick="resetForm()">↺ Yeni Hesaplama</button>
+```
+
+  </div>
+</div>
+
+<!-- History -->
+
+<div class="history-section" id="histSection" style="display:none">
+  <div class="hist-header">
+    <div class="hist-title">// Hesaplama Geçmişi</div>
+    <button class="hist-clear" onclick="clearHistory()">Temizle</button>
+  </div>
+  <table class="hist-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>1. Ölçüm</th><th>Düz. Ağırlık (g)</th><th>Konum (°)</th>
+      </tr>
+    </thead>
+    <tbody id="histBody"></tbody>
+  </table>
+</div>
+
+<footer>
+  <p>Tek Düzlem Fan Balans — 3 Nokta Yöntemi (Thearle) — 0-to-Peak Giriş</p>
+</footer>
+
+</div>
+<script>
+['ticks2'].forEach(id => {
+  const g = document.getElementById(id);
+  for (let i = 0; i < 36; i++) {
+    const rad = (i * 10) * Math.PI / 180;
+    const isMajor = i % 3 === 0;
+    const r1 = 82, r2 = isMajor ? 73 : 77;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', 90 + r1*Math.cos(rad));
+    line.setAttribute('y1', 90 + r1*Math.sin(rad));
+    line.setAttribute('x2', 90 + r2*Math.cos(rad));
+    line.setAttribute('y2', 90 + r2*Math.sin(rad));
+    line.setAttribute('stroke', isMajor ? '#555' : '#2e2e2e');
+    line.setAttribute('stroke-width', isMajor ? '1.5' : '0.8');
+    g.appendChild(line);
+  }
+});
+
+let historyData = [], histCount = 0;
+
+function calcPlane(v0, vA, vB, vC, wt) {
+const v02=v0*v0, vA2=vA*vA, vB2=vB*vB, vC2=vC*vC;
+const dA=vA2-v02, dB=vB2-v02, dC=vC2-v02;
+const x = (2*dA - dB - dC) / 3.0;
+const y = (dB - dC) / Math.sqrt(3);
+const theta_rad = Math.atan2(y, x) / 2.0;
+let theta_deg = theta_rad * 180 / Math.PI;
+if (theta_deg < 0) theta_deg += 360;
+let corr_angle = (theta_deg + 180) % 360;
+const unbal_mag = Math.sqrt(x*x + y*y);
+let w_corr = (v0 * wt) / (Math.sqrt(unbal_mag / 3) > 0.001 ? Math.sqrt(unbal_mag / 3) : 0.001);
+w_corr = Math.max(0.5, Math.min(w_corr, wt * 12));
+return { angle: corr_angle, weight: w_corr };
+}
+
+function updateDial(n, angleDeg) {
+const rad = angleDeg * Math.PI / 180;
+const cx=90, cy=90, len=72;
+document.getElementById(‘arrow’+n).setAttribute(‘x2’, cx+len*Math.cos(rad));
+document.getElementById(‘arrow’+n).setAttribute(‘y2’, cy+len*Math.sin(rad));
+document.getElementById(‘arrow’+n).style.display=’’;
+document.getElementById(‘dot’+n).setAttribute(‘cx’, cx+76*Math.cos(rad));
+document.getElementById(‘dot’+n).setAttribute(‘cy’, cy+76*Math.sin(rad));
+document.getElementById(‘dot’+n).style.display=’’;
+document.getElementById(‘lbl’+n).textContent = angleDeg.toFixed(1)+‘°’;
+document.getElementById(‘lbl’+n).style.display=’’;
+}
+
+function nearestPoint(angle) {
+const pts = [{l:‘0° (A noktası)’,d:0},{l:‘120° (B noktası)’,d:120},{l:‘240° (C noktası)’,d:240}];
+let best=pts[0], bd=999;
+for (const p of pts) {
+const diff = Math.abs(((angle-p.d+540)%360)-180);
+if (diff<bd) { bd=diff; best=p; }
+}
+return best.l;
+}
+
+function calculate() {
+const ids = [‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’];
+const vals = ids.map(id => parseFloat(document.getElementById(id).value));
+if (vals.some(isNaN) || vals.some(v => v <= 0)) {
+alert(‘Lütfen tüm alanları eksiksiz doldurun.’); return;
+}
+const [p2v0,p2vA,p2vB,p2vC,p2wt,p2r,p2m,rpm] = vals;
+
+const r2 = calcPlane(p2v0,p2vA,p2vB,p2vC,p2wt);
+const U2 = r2.weight * p2r;
+const e2 = U2 / p2m;
+
+document.getElementById(‘p2_resW’).textContent = r2.weight.toFixed(1);
+document.getElementById(‘p2_resA’).textContent = r2.angle.toFixed(1)+‘°’;
+document.getElementById(‘p2_U’).textContent = U2.toFixed(0)+’ g·mm’;
+document.getElementById(‘p2_e’).textContent = e2.toFixed(1)+’ μm’;
+document.getElementById(‘p2_target’).textContent = ‘< ‘+(p2v0*0.35).toFixed(2)+’ mm/s’;
+
+updateDial(2, r2.angle);
+
+const banner = document.getElementById(‘statusBanner’);
+banner.className = e2 < 60 ? ‘status-banner ok’ : ‘status-banner warn’;
+document.getElementById(‘statusText’).textContent = e2 < 60
+? ‘✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın’
+: ‘⚠ Yüksek dengesizlik — Düzeltme sonrası doğrulama ölçümü kritik’;
+
+document.getElementById(‘pgContent’).innerHTML = `<div class="pg-section"> <div class="pg-section-title c2">Fan Tarafı (F2)</div> <div class="pg-steps"> <div class="pg-step"><span class="pg-n n2">1</span><span>Ekipmanı durdurun — LOTO uygulayın</span></div> <div class="pg-step"><span class="pg-n n2">2</span><span>0° referansından <strong style="color:#2f6bc8">${r2.angle.toFixed(1)}°</strong> saat yönünde konumu işaretleyin</span></div> <div class="pg-step"><span class="pg-n n2">3</span><span>İşaretlenen konuma <strong style="color:#2f6bc8">${r2.weight.toFixed(1)} g</strong> ağırlık takın (r = ${p2r} mm)</span></div> <div class="pg-step"><span class="pg-n n2">4</span><span>En yakın referans: <strong style="color:#aaa">${nearestPoint(r2.angle)}</strong></span></div> </div> </div> <div class="pg-section" style="margin-top:0.8rem"> <div class="pg-section-title" style="color:#555">Doğrulama</div> <div class="pg-steps"> <div class="pg-step"><span class="pg-n nok">5</span><span>Ekipmanı çalıştırın ve ölçüm alın</span></div> <div class="pg-step"><span class="pg-n nok">6</span><span>Hedef: <strong style="color:#00e676">&lt; ${(p2v0*0.35).toFixed(2)} mm/s</strong></span></div> <div class="pg-step"><span class="pg-n nok">7</span><span>Hedef tutmadıysa 2. tur yapın — son ölçümü 1. ölçüm olarak girin</span></div> </div> </div>`;
+
+document.getElementById(‘resultSection’).style.display = ‘block’;
+document.getElementById(‘resultSection’).scrollIntoView({behavior:‘smooth’, block:‘start’});
+
+histCount++;
+historyData.push({
+n: histCount,
+p2v0, p2w: r2.weight.toFixed(1), p2a: r2.angle.toFixed(1)
+});
+renderHistory();
+}
+
+function renderHistory() {
+if (!historyData.length) { document.getElementById(‘histSection’).style.display=‘none’; return; }
+document.getElementById(‘histSection’).style.display = ‘block’;
+document.getElementById(‘histBody’).innerHTML = historyData.slice().reverse().map(h =>
+`<tr> <td>${h.n}</td> <td>${h.p2v0}</td> <td style="color:var(--plane2);font-weight:500">${h.p2w}</td> <td style="color:var(--plane2)">${h.p2a}°</td> </tr>`
+).join(’’);
+}
+
+function clearHistory() { historyData = []; renderHistory(); }
+
+function resetForm() {
+[‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’].forEach(id => {
+document.getElementById(id).value = ‘’;
+});
+document.getElementById(‘resultSection’).style.display = ‘none’;
+window.scrollTo({top:0, behavior:‘smooth’});
+}
+</script>
+
+</body>
+</html>
