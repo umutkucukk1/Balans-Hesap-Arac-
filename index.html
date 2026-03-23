@@ -107,16 +107,16 @@ text-transform: uppercase; color: var(–ink2); display: flex; align-items: cent
 }
 .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 input[type=“number”] {
-width: 100%; padding: 0.75rem 1rem;
-background: #1e1e1e; border: 1.5px solid var(–border2);
-color: var(–ink); font-family: var(–mono); font-size: 1.05rem;
+width: 100%; padding: 1rem 1.1rem;
+background: #0a0a0a; border: 1.5px solid #333;
+color: #ffffff; font-family: var(–mono); font-size: 1.2rem;
 outline: none; transition: border-color 0.15s; -moz-appearance: textfield;
 border-radius: 2px;
 }
 input[type=“number”]::-webkit-outer-spin-button,
 input[type=“number”]::-webkit-inner-spin-button { -webkit-appearance: none; }
-input[type=“number”]:focus { border-color: var(–plane2); background: #222; }
-input[type=“number”]::placeholder { color: #444; }
+input[type=“number”]:focus { border-color: var(–plane2); background: #111; box-shadow: 0 0 0 3px rgba(68,136,255,0.15); }
+input[type=“number”]::placeholder { color: #383838; }
 .input-unit { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); }
 
 .hint-box {
@@ -275,22 +275,22 @@ footer p { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); le
   <div class="input-grid">
     <div class="input-group">
       <label><span class="dot" style="background:#555"></span>1. Ölçüm — Ağırlıksız</label>
-      <input type="number" id="p2_v0" placeholder="örn: 6.40" step="0.01" min="0">
+      <input type="number" inputmode="decimal" id="p2_v0" placeholder="örn: 6.40" step="0.01" min="0">
       <div class="input-unit">mm/s — 0 to peak — 1X bileşeni</div>
     </div>
     <div class="input-group">
       <label><span class="dot" style="background:#c84b2f"></span>2. Ölçüm — Deneme ağırlığı 0°</label>
-      <input type="number" id="p2_vA" placeholder="örn: 8.10" step="0.01" min="0">
+      <input type="number" inputmode="decimal" id="p2_vA" placeholder="örn: 8.10" step="0.01" min="0">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
     <div class="input-group">
       <label><span class="dot" style="background:#e8a020"></span>3. Ölçüm — Deneme ağırlığı 120°</label>
-      <input type="number" id="p2_vB" placeholder="örn: 5.20" step="0.01" min="0">
+      <input type="number" inputmode="decimal" id="p2_vB" placeholder="örn: 5.20" step="0.01" min="0">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
     <div class="input-group">
       <label><span class="dot" style="background:#2f6bc8"></span>4. Ölçüm — Deneme ağırlığı 240°</label>
-      <input type="number" id="p2_vC" placeholder="örn: 7.30" step="0.01" min="0">
+      <input type="number" inputmode="decimal" id="p2_vC" placeholder="örn: 7.30" step="0.01" min="0">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
   </div>
