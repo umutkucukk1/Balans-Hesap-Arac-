@@ -542,7 +542,8 @@ function clearHistory() { historyData = []; renderHistory(); }
 
 function resetForm() {
 [‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’].forEach(id => {
-document.getElementById(id).value = ‘’;
+const el = document.getElementById(id);
+if (el) el.value = ‘’;
 });
 document.getElementById(‘resultSection’).style.display = ‘none’;
 window.scrollTo({top:0, behavior:‘smooth’});
